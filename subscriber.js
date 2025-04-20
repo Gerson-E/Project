@@ -1,6 +1,10 @@
-const mqtt = require('mqtt');
+// Subscribes to MQTT messages on gps/tracker topic
+// Passes pulse, spo2, and temp to a trained ML model using predict.py
 
-const brokerUrl = 'mqtt://localhost:1883'; // Change if using remote broker
+const mqtt = require('mqtt');
+const { exec } = require('child_process'); // used to run external system commands from node.js script
+
+const brokerUrl = 'mqtt://localhost:1883';
 const topic = 'gps/tracker';
 
 const client = mqtt.connect(brokerUrl);
@@ -19,12 +23,23 @@ client.on('connect', () => {
 client.on('message', (topic, message) => {
     try {
         const data = JSON.parse(message.toString());
-        console.log(`[${new Date().toISOString()}] ${topic}:`, data);
+        const { pulse, spo2, temp } = data; // for ML
+        console.log(`Received: Pulse=${pulse}, SpO₂=${spo2}, Temp=${temp.toFixed(2)}`);
+
+        // run Python ML model prediction
+        exec(`python predict.py ${pulse} ${spo2} ${temp}`, (err, stdout) => {
+            if (err) {
+                console.error('ML prediction error:', err);
+            } else {
+                console.log('ML Prediction:', stdout.trim());
+            }
+        });
+
     } catch (e) {
-        console.error('Failed to parse message:', e);
+        console.error('JSON parse error or missing fields:', e);
     }
 });
 
 client.on('error', (err) => {
-    console.error('❗ MQTT connection error:', err);
+    console.error('MQTT connection error:', err);
 });
