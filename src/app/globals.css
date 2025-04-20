@@ -69,10 +69,22 @@
   }
 }
 
-@layer base {
+/* @layer base {
   * {
-    @apply border-border;
+    @apply border;
+    border-color: hsl(var(--border));
   }
+  body {
+    @apply bg-background text-foreground;
+  }
+} */
+@layer base {
+  *, ::before, ::after {
+    border-width: 1px;
+    border-style: solid;
+    border-color: hsl(var(--border));
+  }
+
   body {
     @apply bg-background text-foreground;
   }
