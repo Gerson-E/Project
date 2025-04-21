@@ -1,5 +1,16 @@
 // Subscribes to MQTT messages on gps/tracker topic
 // Passes pulse, spo2, and temp to a trained ML model using predict.py
+// Stores values in InfluxDB
+
+require('dotenv').config(); // <-- loads the .env file
+
+import { influxDB, Point } from '@influxdata/influxdb-client' // instantiate influx client
+// instantiate influxDB with env variables
+const influxDB = new InfluxDB({
+    url: process.env.INFLUX_URL,
+    token: process.env.INFLUX_TOKEN,
+    org: process.env.INFLUX_ORG,
+  });
 
 const mqtt = require('mqtt');
 const { exec } = require('child_process'); // used to run external system commands from node.js script
@@ -34,6 +45,24 @@ client.on('message', (topic, message) => {
                 console.log('ML Prediction:', stdout.trim());
             }
         });
+
+        // call the api ability to write to influx
+        const writeApi = influxDB.getWriteApi(org, bucket)
+        // overall tag for the key value pairs
+        writeApi.useDefaultTags({app: 'tracker'})
+        2
+        // make a data point. figure out var names
+        const point = new Point('test_point')
+            .tag('user', '')
+            .floatField('lat', lat)
+            .floatField('long', long)
+            // .floatField('stress', stress)
+
+            .floatField('stressed', stress)
+
+
+        writeApi.writePoint(point);
+        //need to close it
 
     } catch (e) {
         console.error('JSON parse error or missing fields:', e);
