@@ -1,5 +1,12 @@
 import Image from "next/image";
-import MapComponent from "@/components/map-component" 
+// import MapComponent from "@/components/map-component" 
+
+import dynamic from "next/dynamic";
+
+const MapComponent = dynamic(
+    () => import("@/components/map-component"),
+    { ssr: false, loading: () => <p>Loading map…</p> }
+  );
 
 export default function Home() {
   return (
