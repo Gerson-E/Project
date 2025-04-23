@@ -3,7 +3,14 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import type { LatLngExpression } from "leaflet"
 import "leaflet/dist/leaflet.css"
+import dynamic from 'next/dynamic';
+
 // import L from "leaflet"
+
+const Map = dynamic(() => import('./map-component'), {
+    ssr: false,
+    loading: () => <p>Loading map…</p>,
+  });
 
 export default function MapComponent() {
 //   const position: [number, number] = [34.0205, -118.2856] // USC default
