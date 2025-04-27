@@ -111,23 +111,30 @@ import MapWrapper from '@/components/MapWrapper';   // path may differ—adjust 
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
+    // <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    //   <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    //     <Image
+    //       className="dark:invert"
+    //       src="/next.svg"
+    //       alt="Next.js logo"
+    //       width={180}
+    //       height={38}
+    //       priority
+    //     />
 
-        {/* Map renders only after the page reaches the browser */}
+    //     {/* Map renders only after the page reaches the browser */}
+    //     <MapWrapper />
+
+    //     {/* …rest of your content… */}
+    //   </main>
+    //   {/* footer … */}
+    // </div>
+    <div className="flex flex-col min-h-screen">
+      <header className="p-4 text-center">My cool site</header>
+      <div className="flex-grow">
         <MapWrapper />
-
-        {/* …rest of your content… */}
-      </main>
-      {/* footer … */}
+      </div>
+      <footer className="p-4 text-center">© 2025</footer>
     </div>
   );
 }
