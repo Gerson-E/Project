@@ -1,5 +1,5 @@
 import Image from "next/image";
-import MapComponent from "@/components/map-component" 
+import MapComponent from "@/src/app/map-component" 
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
           priority
         />
         
-        <MapComponent />
+        <MapComponent/>
 
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
