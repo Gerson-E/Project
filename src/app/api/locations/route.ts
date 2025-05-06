@@ -2,18 +2,24 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { InfluxDB } from '@influxdata/influxdb-client';
 
-const influx = new InfluxDB({
-  url: process.env.INFLUX_URL!,
-  token: process.env.INFLUX_TOKEN!,
-});
 const org    = process.env.INFLUX_ORG!;
 const bucket = process.env.INFLUX_BUCKET!;
 
-const queryApi = influx.getQueryApi(org);
+const { INFLUX_URL, INFLUX_TOKEN, INFLUX_ORG, INFLUX_BUCKET } = process.env;
 
 type Row = { lat: number; lon: number; stress: number; time: string };
 
 export async function GET() {
+    if (!INFLUX_URL || !INFLUX_TOKEN || !INFLUX_ORG || !INFLUX_BUCKET) {
+        return NextResponse.json({ error: 'Influx env vars missing' }, { status: 500 });
+    }
+
+    const influx = new InfluxDB({
+        url: process.env.INFLUX_URL!,
+        token: process.env.INFLUX_TOKEN!,
+      });
+    const queryApi = influx.getQueryApi(org);
+
     const flux = `
     from(bucket: "${bucket}")
         |> range(start: -12h)
