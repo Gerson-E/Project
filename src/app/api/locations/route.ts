@@ -5,12 +5,13 @@ import { InfluxDB } from '@influxdata/influxdb-client';
 const org    = process.env.INFLUX_ORG!;
 const bucket = process.env.INFLUX_BUCKET!;
 
-const { INFLUX_URL, INFLUX_TOKEN, INFLUX_ORG, INFLUX_BUCKET } = process.env;
-
 type Row = { lat: number; lon: number; stress: number; time: string };
 
 export async function GET() {
+    const { INFLUX_URL, INFLUX_TOKEN, INFLUX_ORG, INFLUX_BUCKET } = process.env;
+
     if (!INFLUX_URL || !INFLUX_TOKEN || !INFLUX_ORG || !INFLUX_BUCKET) {
+        console.error('[API] Missing env', { INFLUX_URL, INFLUX_ORG, INFLUX_BUCKET });
         return NextResponse.json({ error: 'Influx env vars missing' }, { status: 500 });
     }
 
