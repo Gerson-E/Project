@@ -13,12 +13,17 @@ export default function MapComponent() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch('/api/locations');
-      setLocs(await res.json());
+      try {
+        const res = await fetch('/api/locations');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setLocs(await res.json());
+      } catch (err) {
+        console.warn('load locations failed:', err);
+      }
     };
-    load();
-    const id = setInterval(load, 10_000);
-    return () => clearInterval(id);
+    load();                            // initial fetch
+    const id = setInterval(load, 10000);
+    return () => clearInterval(id);    // cleanup on unmount
   }, []);
 
   return (

@@ -127,7 +127,7 @@ client.on('message', (_topic, payload) => {
     console.log('[subscriber] received', { lat, lon, stress });
 
     // optional ML prediction
-    exec(`python predict.py ${lat} ${lon} ${stress}`, (err, stdout) => {
+    exec(`python3 predict.py ${lat} ${lon} ${stress}`, (err, stdout) => {
       if (err) console.error('[subscriber] ML error', err);
       else     console.log('[subscriber] ML prediction:', stdout.trim());
     });
