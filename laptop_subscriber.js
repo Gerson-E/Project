@@ -9,13 +9,22 @@ note:
 - run npm install mqtt
 - ensure mosquitto is running locally (sudo systemctl start mo)
 
+how to run this on laptop:
+
+- run mosquitto broker in terminal (command prompt of laptop): 
+"C:\Program Files\mosquitto\mosquitto.exe" -c "C:\Program Files\mosquitto\mosquitto.conf" -v
+in order to allow permissions as well
+
+- then run in seperate terminal: "node laptop_subscriber.js" from the Project file
+
+- on publisher on rpi: change broker_ip to laptop ip + run "python3 raspi_publisher.py"
 */
 
 const mqtt = require('mqtt');
 const brokerUrl = 'mqtt://172.20.10.11:1883';
 const topic = 'gps/tracker';
 const client = mqtt.connect(brokerUrl);
-
+raspi_
 client.on('connect', () => {
     console.log('Subscriber connected to broker');
     client.subscribe(topic, (err) => {
