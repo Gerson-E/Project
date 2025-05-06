@@ -51,9 +51,6 @@ export default function MapComponent() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="© OpenStreetMap contributors"
       />
-      <Marker position={position}>
-        <Popup>You are here.</Popup>
-      </Marker>
     </MapContainer>
   );
 }
