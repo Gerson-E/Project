@@ -4,7 +4,7 @@ import MapWrapper from '@/components/MapWrapper';   // path may differ—adjust 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="p-4 text-center">250 Projec Website</header>
+      <header className="p-4 text-center">250 Project Website</header>
       <div className="flex-grow">
         <MapWrapper />
       </div>
