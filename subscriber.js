@@ -161,6 +161,8 @@
 
 
 require('dotenv').config();
+console.log('[debug] INFLUX_URL =', process.env.INFLUX_URL);
+console.log('[debug] INFLUX_BUCKET =', process.env.INFLUX_BUCKET);
 const mqtt = require('mqtt');
 const { spawn } = require('child_process');
 const { InfluxDB, Point } = require('@influxdata/influxdb-client');
