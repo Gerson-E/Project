@@ -1,22 +1,22 @@
-# use: python predict.py <pulse> <spo2> <temp>
-# outputs: "stressed" or "not stressed"
-
 import sys
 import joblib
-import numpy as np
+import pandas as pd
 
-# load the model created in training model.py
+# load the model and scaler
 model = joblib.load("stress_model.pkl")
+scaler = joblib.load("scaler.pkl")
 
-# read the pulse, eda, temp from command-line args 
-# (should recieve numbers: 85 0.3 36.5, then make a prediction)
-pulse = float(sys.argv[1])
-eda = float(sys.argv[2])
-temp = float(sys.argv[3])
+# read features from command-line args
+features = list(map(float, sys.argv[1:]))  # assumes ordered features
 
-# the format for the prediction
-X = np.array([[pulse, eda, temp]])
-pred = model.predict(X)[0]
+# wrap into a DataFrame
+cols = ["EDAR_Mean", "EDAR_Min", "EDAR_Max", "EDAR_Std", "EDAR_Kurtosis", "EDAR_Skew", 
+        "Num_PeaksR", "EDAR_Amphitude", "EDAR_Duration", "HRR_Mean", "HRR_Min", "HRR_Max", 
+        "HRR_Std", "HRR_RMS", "TEMPR_Mean", "TEMPR_Min", "TEMPR_Max", "TEMPR_Std"]
 
-# outputs the classification
-print("stressed" if pred == 1 else "not stressed")
+X = pd.DataFrame([features], columns=cols)
+X_scaled = scaler.transform(X)
+
+# predict
+pred = model.predict(X_scaled)[0]
+print(pred)  # outputs 0, 1, or 2
